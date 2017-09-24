@@ -1,0 +1,19 @@
+/*
+.comment {
+  width: 100%;
+  border: 1px solid #555;
+}
+
+.child {
+  width: 90%;
+  margin-left: 8%;
+  margin-right: 2%;
+}
+*/
+
+#reddit_comments {
+  margin: 10px 0px;
+  padding-bottom: 10px;
+  width: var(--flex640-mode-player-width);
+  border-bottom: 1px solid var(--yt-border-color);
+}
