@@ -52,10 +52,51 @@ $.when(call1(v), call2(v), call3(v), call4(v)).done(function(r1, r2, r3, r4) {
       const forward = `${subreddit}, ${t.score}&#8679;, ${t.num_comments}&#128172;`;
       const spaces = "&nbsp".repeat(52 - forward.length);
       const sliced_title = t.title.length < 65 ? t.title : t.title.slice(0, 60) + "...";
-      const $opt = `<option value="${t.id}">${forward}${spaces} ${sliced_title}</option>`;
+      const $opt = `<option value="${t.permalink}">${forward}${spaces} ${sliced_title}</option>`;
       $thread_select.append($opt);
     });
 
+    $thread_select.on('change', function(event) {
+      setup_thread(event.target.value);
+    });
+
     $("#reddit_comments > #nav").append($thread_select);
+
+    setup_thread(sorted_threads[0].data.permalink);
   });
 });
+
+function setup_thread(permalink) {
+  $.ajax({
+    url: "https://www.reddit.com" + permalink,
+
+    success: function(data) {
+      const $page = $(data);
+      $page.find("script").remove();
+      $page.find(".cloneable").remove();
+      $page.find(".panestack-title").remove();
+      $page.find(".menuarea").remove();
+      $page.find(".gold-wrap").remove();
+      $page.find(".expand").remove();
+      $page.find(".numchildren").remove();
+      $page.find(".flat-list").remove();
+      $page.find(".midcol").remove();
+      $page.find(".domain").remove();
+      $page.find(".flair").remove();
+      $page.find(".linkflairlabel").remove();
+      $page.find(".reportform").remove();
+      $page.find(".expando-button").remove();
+      $page.find(".score.likes").remove();
+      $page.find(".score.dislikes").remove();
+      $page.find("a.title").attr("href", "https://www.reddit.com" + permalink);
+      const $header = $page.find(".top-matter")[0].innerHTML;
+      const $comments = $page.find(".commentarea")[0].innerHTML;
+      $("#reddit_comments > #title").empty().append($header);
+      $("#reddit_comments > #comments").empty().append($comments);
+    },
+
+    error: function(e) {
+
+    }
+  });
+}
