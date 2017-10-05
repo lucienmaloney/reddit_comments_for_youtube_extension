@@ -3,13 +3,17 @@
   "name": "Reddit Comments on Youtube",
   "version": "0.1",
   "permissions": ["http://*.youtube.com/*", "https://*.youtube.com/*", "http://www.reddit.com/*", "https://www.reddit.com/*"],
+  "background": {
+    "scripts": ["jquery-3.2.1.min.js", "background.js"]
+  },
   "content_scripts": [
     {
-      "matches": [
-        "https://www.youtube.com/*"
-      ],
+      "matches": ["https://www.youtube.com/*"],
       "js": ["jquery-3.2.1.min.js", "index.js"],
       "css": ["thread.css"]
     }
-  ]
+  ]/*,
+  "permissions": [
+    "tabs"
+  ]*/
 }

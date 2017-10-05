@@ -47,7 +47,7 @@ const setup_comments_section = function(data) {
   });
 
   $.each(grouped_data, function(key, row) {
-
+    $("#nav").append();
   });
 
   console.log(grouped_data);
