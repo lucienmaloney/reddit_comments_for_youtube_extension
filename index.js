@@ -91,19 +91,7 @@ function setup_thread(permalink, $thread_select) {
       const $header = $page.find(".top-matter")[0].innerHTML;
       const $comments = $page.find(".commentarea")[0].innerHTML;
 
-/*
-      if($("#ticket-shelf").length) {
-        append_extension($thread_select, $header, $comments);
-      } else {
-        const interval = setInterval(function() {
-          if($("#ticket-shelf").length) {
-            append_extension($thread_select, $header, $comments);
-            clearInterval(interval);
-          }
-        }, 500);
-      }
-*/
-      append_extension($thread_select, $header, $comments);
+      append_extension($thread_select, $header, $comments, $thread_select.children().length);
     },
 
     error: function(e) {
@@ -112,38 +100,30 @@ function setup_thread(permalink, $thread_select) {
   });
 }
 
-function append_extension($thread_select, $header, $comments) {
+function append_extension($thread_select, $header, $comments, thread_number) {
+  const thread_text = thread_number === 1 ? "1 Thread" : thread_number + " Threads";
   if(!$("#reddit_comments").length) {
     $("#ticket-shelf").after("<div id='reddit_comments'></div>");
     $("#reddit_comments").append("<div id='top_bar'></div>");
     $("#reddit_comments").append("<div id='nav'></div>");
     $("#reddit_comments").append("<div id='title'></div>");
     $("#reddit_comments").append("<div id='comments'></div>");
-    $("#reddit_comments > #top_bar").append("<h2>Reddit On Youtube</h2>");
+    $("#reddit_comments > #top_bar").append(`<h2>Reddit On Youtube</h2><h2></h2>`);
   }
+  $("#reddit_comments > #top_bar > h2:last-child").html(thread_text);
 
-  if($thread_select) {
-    $("#reddit_comments > #nav").empty().append($thread_select);
-  }
-
+  $("#reddit_comments > #nav").empty().append($thread_select);
   $("#reddit_comments > #title").empty().append($header);
   $("#reddit_comments > #comments").empty().append($comments);
 }
 
-//load_extension();
-//window.addEventListener("yt-navigate-start", function() {
-//  load_extension();
-//});
-
 window.addEventListener("scroll", function(e) {
   const youtube_url = new URL(window.location.href);
   const v = youtube_url.searchParams.get("v");
-  console.log(e);
   if(v !== url) {
     $("#reddit_comments > #nav").empty();
     $("#reddit_comments > #title").empty();
     $("#reddit_comments > #comments").empty();
-    console.log("loaded");
     load_extension();
   }
 });

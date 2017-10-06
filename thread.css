@@ -1,6 +1,7 @@
 #reddit_comments {
-  margin: 10px 0px;
-  padding-bottom: 10px;
+  margin: 20px 0px;
+  padding-bottom: 20px;
+  padding-top: 10px;
   width: var(--flex640-mode-player-width);
   border-bottom: 1px solid var(--yt-border-color);
 }
@@ -43,6 +44,11 @@
   font-size: 1.25em;
   color: #888 !important;
   margin-left: 15px;
+}
+
+#reddit_comments > #top_bar {
+  display: flex;
+  justify-content: space-between;
 }
 
 .live-timestamp {
@@ -89,4 +95,11 @@
 
 .sitetable > .comment > .entry {
   margin-bottom: 2px;
+}
+
+@media (max-width: 999px) {
+  #reddit_comments {
+    order: 7;
+    width: 100% !important;
+  }
 }
