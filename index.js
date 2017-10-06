@@ -25,10 +25,13 @@ function call4(video_id) {
   });
 }
 
+let url = "";
+
 function load_extension() {
   const youtube_url = new URL(window.location.href);
   const v = youtube_url.searchParams.get("v");
-  
+  url = v;
+
   if(v) {
     $.when(call1(v), call2(v), call3(v), call4(v)).done(function(r1, r2, r3, r4) {
       const threads = r1[0].data.children.concat(r2[0].data.children).concat(r3[0].data.children).concat(r4[0].data.children);
@@ -88,6 +91,7 @@ function setup_thread(permalink, $thread_select) {
       const $header = $page.find(".top-matter")[0].innerHTML;
       const $comments = $page.find(".commentarea")[0].innerHTML;
 
+/*
       if($("#ticket-shelf").length) {
         append_extension($thread_select, $header, $comments);
       } else {
@@ -98,6 +102,8 @@ function setup_thread(permalink, $thread_select) {
           }
         }, 500);
       }
+*/
+      append_extension($thread_select, $header, $comments);
     },
 
     error: function(e) {
@@ -113,6 +119,7 @@ function append_extension($thread_select, $header, $comments) {
     $("#reddit_comments").append("<div id='nav'></div>");
     $("#reddit_comments").append("<div id='title'></div>");
     $("#reddit_comments").append("<div id='comments'></div>");
+    $("#reddit_comments > #top_bar").append("<h2>Reddit On Youtube</h2>");
   }
 
   if($thread_select) {
@@ -123,7 +130,20 @@ function append_extension($thread_select, $header, $comments) {
   $("#reddit_comments > #comments").empty().append($comments);
 }
 
-load_extension();
-window.addEventListener("yt-navigate-start", function() {
-  load_extension();
+//load_extension();
+//window.addEventListener("yt-navigate-start", function() {
+//  load_extension();
+//});
+
+window.addEventListener("scroll", function(e) {
+  const youtube_url = new URL(window.location.href);
+  const v = youtube_url.searchParams.get("v");
+  console.log(e);
+  if(v !== url) {
+    $("#reddit_comments > #nav").empty();
+    $("#reddit_comments > #title").empty();
+    $("#reddit_comments > #comments").empty();
+    console.log("loaded");
+    load_extension();
+  }
 });

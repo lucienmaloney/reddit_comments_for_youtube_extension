@@ -1,0 +1,12 @@
+ability to hide reddit comments
+load more
+don't show dropdown if no threads
+show how many threads
+hide things like flairs and gold and such
+Better alphabetic sort
+hover to show full title
+Scale well
+
+Possible extras:
+Different styling
+Usable features (upvote, downvote, save, etc)

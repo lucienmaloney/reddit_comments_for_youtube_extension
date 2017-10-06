@@ -22,7 +22,8 @@
 
 #reddit_comments > #title {
   width: 100%;
-  margin: 25px 0px;
+  margin-top: 25px;
+  margin-bottom: 10px;
 }
 
 #reddit_comments > #comments {
@@ -42,6 +43,10 @@
   font-size: 1.25em;
   color: #888 !important;
   margin-left: 15px;
+}
+
+.live-timestamp {
+  padding: 0px !important;
 }
 
 .child {
@@ -78,6 +83,10 @@
 }
 
 .usertext-body > div > p {
-  margin-top: 5px;
+  margin-top: 4px;
   font-size: 1.38em;
+}
+
+.sitetable > .comment > .entry {
+  margin-bottom: 2px;
 }
