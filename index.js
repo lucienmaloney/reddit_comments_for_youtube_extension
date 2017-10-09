@@ -37,8 +37,8 @@ function load_extension() {
       const threads = r1[0].data.children.concat(r2[0].data.children).concat(r3[0].data.children).concat(r4[0].data.children);
 
       const sorted_threads = threads.sort(function(a,b) {
-        const suba = a.data.subreddit;
-        const subb = b.data.subreddit;
+        const suba = a.data.subreddit.toLowerCase();
+        const subb = b.data.subreddit.toLowerCase();
         return ((suba < subb) ? -1 : ((suba > subb) ? 1 : 0));
       });
       
@@ -50,7 +50,7 @@ function load_extension() {
         const forward = `${subreddit}, ${t.score}&#8679;, ${t.num_comments}&#128172;`;
         const spaces = "&nbsp".repeat(52 - forward.length);
         const sliced_title = t.title.length < 65 ? t.title : t.title.slice(0, 60) + "...";
-        const $opt = `<option value="${t.permalink}">${forward}${spaces} ${sliced_title}</option>`;
+        const $opt = `<option value="${t.permalink}" title="${t.title.replace(/\"/g,'&quot;')}">${forward}${spaces} ${sliced_title}</option>`;
         $thread_select.append($opt);
       });
 
@@ -87,11 +87,13 @@ function setup_thread(permalink, $thread_select) {
       $page.find(".expando-button").remove();
       $page.find(".score.likes").remove();
       $page.find(".score.dislikes").remove();
+      $page.find(".userattrs").remove();
+      $page.find(".gilden-icon").remove();
       $page.find("a.title").attr("href", "https://www.reddit.com" + permalink);
       const $header = $page.find(".top-matter")[0].innerHTML;
       const $comments = $page.find(".commentarea")[0].innerHTML;
 
-      append_extension($thread_select, $header, $comments, $thread_select.children().length);
+      append_extension($thread_select, $header, $comments);
     },
 
     error: function(e) {
@@ -100,8 +102,7 @@ function setup_thread(permalink, $thread_select) {
   });
 }
 
-function append_extension($thread_select, $header, $comments, thread_number) {
-  const thread_text = thread_number === 1 ? "1 Thread" : thread_number + " Threads";
+function append_extension($thread_select, $header, $comments) {
   if(!$("#reddit_comments").length) {
     $("#ticket-shelf").after("<div id='reddit_comments'></div>");
     $("#reddit_comments").append("<div id='top_bar'></div>");
@@ -110,9 +111,16 @@ function append_extension($thread_select, $header, $comments, thread_number) {
     $("#reddit_comments").append("<div id='comments'></div>");
     $("#reddit_comments > #top_bar").append(`<h2>Reddit On Youtube</h2><h2></h2>`);
   }
-  $("#reddit_comments > #top_bar > h2:last-child").html(thread_text);
 
-  $("#reddit_comments > #nav").empty().append($thread_select);
+  if($thread_select) {
+    const thread_number = $thread_select.children().length;
+    const thread_text = thread_number === 1 ? "1 Thread" : thread_number + " Threads";
+
+    $("#reddit_comments > #top_bar > h2:last-child").html(thread_text);
+
+    $("#reddit_comments > #nav").empty().append($thread_select);
+  }
+
   $("#reddit_comments > #title").empty().append($header);
   $("#reddit_comments > #comments").empty().append($comments);
 }
