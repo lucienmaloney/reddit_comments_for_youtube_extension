@@ -6,6 +6,7 @@ don't show dropdown if no threads
 //Better alphabetic sort
 //hover to show full title
 Scale well
+Make sure video id can be found
 
 Possible extras:
 Different styling

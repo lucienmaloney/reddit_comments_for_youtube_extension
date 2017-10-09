@@ -29,6 +29,7 @@
 
 #reddit_comments > #comments {
   font: normal x-small verdana,arial,helvetica,sans-serif;
+  word-wrap: break-word;
 }
 
 #reddit_comments > #title > .title {
@@ -95,6 +96,11 @@
 
 .sitetable > .comment > .entry {
   margin-bottom: 2px;
+}
+
+#nothread {
+  width: 100%;
+  text-align: center;
 }
 
 @media (max-width: 999px) {

@@ -60,7 +60,12 @@ function load_extension() {
         setup_thread(event.target.value);
       });
 
-      setup_thread(sorted_threads[0].data.permalink, $thread_select);
+      if(sorted_threads.length) {
+        setup_thread(sorted_threads[0].data.permalink, $thread_select);
+      } else {
+        append_extension(false, "<h3 id='nothread'>No Threads Found</h3>", "");
+        $("#reddit_comments > #nav").attr("display", "none");
+      }
     });
   }
 }
