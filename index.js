@@ -94,6 +94,8 @@ function setup_thread(permalink, $thread_select) {
       $page.find(".score.dislikes").remove();
       $page.find(".userattrs").remove();
       $page.find(".gilden-icon").remove();
+      $page.find(".morechildren").remove();
+      $page.find(".parent").remove();
       $page.find("a.title").attr("href", "https://www.reddit.com" + permalink);
       const $header = $page.find(".top-matter")[0].innerHTML;
       const $comments = $page.find(".commentarea")[0].innerHTML;
@@ -107,6 +109,10 @@ function setup_thread(permalink, $thread_select) {
   });
 }
 
+function click_thing(e) {
+  //console.log(e);
+}
+
 function append_extension($thread_select, $header, $comments) {
   if(!$("#reddit_comments").length) {
     $("#ticket-shelf").after("<div id='reddit_comments'></div>");
@@ -115,6 +121,7 @@ function append_extension($thread_select, $header, $comments) {
     $("#reddit_comments").append("<div id='title'></div>");
     $("#reddit_comments").append("<div id='comments'></div>");
     $("#reddit_comments > #top_bar").append(`<h2>Reddit On Youtube</h2><h2></h2>`);
+    $("#reddit_comments").append(`<script>${click_thing.toString()}</script>`);
   }
 
   if($thread_select) {
@@ -128,6 +135,12 @@ function append_extension($thread_select, $header, $comments) {
 
   $("#reddit_comments > #title").empty().append($header);
   $("#reddit_comments > #comments").empty().append($comments);
+  $("#reddit_comments > #comments").find("a:not(.author)").each(function() {
+    const href = this.getAttribute("href");
+    if(href[0] === "/") {
+      $(this).attr("href", "https://www.reddit.com" + href);
+    }
+  });
 }
 
 window.addEventListener("scroll", function(e) {

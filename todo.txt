@@ -1,12 +1,15 @@
 ability to hide reddit comments
-load more
-don't show dropdown if no threads
+//load more
+//don't show dropdown if no threads
 //show how many threads
 //hide things like flairs and gold and such
 //Better alphabetic sort
 //hover to show full title
 Scale well
-Make sure video id can be found
+//Make sure video id can be found
+Correct Links
+Fix custom styling
+Loading icon
 
 Possible extras:
 Different styling
