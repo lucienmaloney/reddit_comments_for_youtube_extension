@@ -113,6 +113,18 @@ function click_thing(e) {
   //console.log(e);
 }
 
+function toggle_expand(elem) {
+  document.querySelector("#reddit_comments > #nav").classList.toggle("reddit_hidden");
+  document.querySelector("#reddit_comments > #title").classList.toggle("reddit_hidden");
+  document.querySelector("#reddit_comments > #comments").classList.toggle("reddit_hidden");
+  //const expander = document.getElementById("h2 > #expand");
+  if(elem.innerHTML[1] === "-") {
+    elem.innerHTML = "[+]";
+  } else {
+    elem.innerHTML = "[-]";
+  }
+}
+
 function append_extension($thread_select, $header, $comments) {
   if(!$("#reddit_comments").length) {
     $("#ticket-shelf").after("<div id='reddit_comments'></div>");
@@ -120,8 +132,8 @@ function append_extension($thread_select, $header, $comments) {
     $("#reddit_comments").append("<div id='nav'></div>");
     $("#reddit_comments").append("<div id='title'></div>");
     $("#reddit_comments").append("<div id='comments'></div>");
-    $("#reddit_comments > #top_bar").append(`<h2>Reddit On Youtube</h2><h2></h2>`);
-    $("#reddit_comments").append(`<script>${click_thing.toString()}</script>`);
+    $("#reddit_comments > #top_bar").append(`<h2><a id="expand" href="javascript:void(0)" onclick="return toggle_expand(this)">[-]</a> Reddit On Youtube</h2><h2></h2>`);
+    $("#reddit_comments").append(`<script>${click_thing.toString() + toggle_expand.toString()}</script>`);
   }
 
   if($thread_select) {

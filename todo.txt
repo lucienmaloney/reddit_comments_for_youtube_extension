@@ -1,4 +1,4 @@
-ability to hide reddit comments
+//ability to hide reddit comments
 //load more
 //don't show dropdown if no threads
 //show how many threads
@@ -7,7 +7,7 @@ ability to hide reddit comments
 //hover to show full title
 Scale well
 //Make sure video id can be found
-Correct Links
+//Correct Links
 Fix custom styling
 Loading icon
 

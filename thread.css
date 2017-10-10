@@ -103,6 +103,22 @@
   text-align: center;
 }
 
+#expand {
+  color: #369;
+  text-decoration: none;
+  font-family: "Lucida Console", Monaco, monospace;
+  letter-spacing: -1px;
+}
+
+#expand:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.reddit_hidden {
+  display: none !important;
+}
+
 @media (max-width: 999px) {
   #reddit_comments {
     order: 7;
