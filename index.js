@@ -154,8 +154,10 @@ function append_extension($thread_select, $header, $comments) {
     }
   });
 
-  const subreddit = $("#reddit_comments > #nav > select").find(":selected")[0].innerHTML.split(",")[0];
-  $("#reddit_comments > #title > .tagline").append(` to <a class="author" href="${'https://www.reddit.com/' + subreddit}">${subreddit}</a>`);
+  if($("#reddit_comments > #nav > select").length) {
+    const subreddit = $("#reddit_comments > #nav > select").find(":selected")[0].innerHTML.split(",")[0];
+    $("#reddit_comments > #title > .tagline").append(` to <a class="author" href="${'https://www.reddit.com/' + subreddit}">${subreddit}</a>`);
+  }
 }
 
 window.addEventListener("scroll", function(e) {
@@ -165,6 +167,7 @@ window.addEventListener("scroll", function(e) {
     $("#reddit_comments > #nav").empty();
     $("#reddit_comments > #title").empty();
     $("#reddit_comments > #comments").empty();
+    $("#reddit_comments > #top_bar > h2:last-child").empty();
     load_extension();
   }
 });
