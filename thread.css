@@ -67,6 +67,7 @@
 
 .tagline > a.author {
   text-decoration: none;
+  padding-right: 0px;
 }
 
 .tagline > a.author:hover {

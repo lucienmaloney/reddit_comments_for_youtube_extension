@@ -153,6 +153,9 @@ function append_extension($thread_select, $header, $comments) {
       $(this).attr("href", "https://www.reddit.com" + href);
     }
   });
+
+  const subreddit = $("#reddit_comments > #nav > select").find(":selected")[0].innerHTML.split(",")[0];
+  $("#reddit_comments > #title > .tagline").append(` to <a class="author" href="${'https://www.reddit.com/' + subreddit}">${subreddit}</a>`);
 }
 
 window.addEventListener("scroll", function(e) {
