@@ -93,7 +93,7 @@ function setup_thread(permalink, $thread_select) {
       $page.find(".score.likes").remove();
       $page.find(".score.dislikes").remove();
       $page.find(".userattrs").remove();
-      $page.find(".gilden-icon").remove();
+      $page.find(".gilded-icon").parent().remove();
       $page.find(".morechildren").remove();
       $page.find(".parent").remove();
       $page.find("a.title").attr("href", "https://www.reddit.com" + permalink);

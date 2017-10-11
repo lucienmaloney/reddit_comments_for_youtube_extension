@@ -5,7 +5,7 @@
 //hide things like flairs and gold and such
 //Better alphabetic sort
 //hover to show full title
-Scale well
+//Scale well
 //Make sure video id can be found
 //Correct Links
 Fix custom styling
