@@ -90,7 +90,7 @@
   padding-top: 15px;
 }
 
-.usertext-body > div > p {
+.usertext-body > div > p, .md > blockquote > p {
   margin-top: 4px;
   font-size: 1.38em;
 }
@@ -118,6 +118,14 @@
 
 .reddit_hidden {
   display: none !important;
+}
+
+.md > blockquote {
+  padding: 0 8px;
+  margin: 0px;
+  margin-left: 5px;
+  border-left: 2px solid #c5c1ad;
+  color: #4f4f4f;
 }
 
 @media (max-width: 999px) {
