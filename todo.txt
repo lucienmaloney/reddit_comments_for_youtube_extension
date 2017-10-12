@@ -8,7 +8,7 @@
 //Scale well
 //Make sure video id can be found
 //Correct Links
-Fix custom styling
+//Fix custom styling
 Loading icon
 
 Possible extras:

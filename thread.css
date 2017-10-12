@@ -90,7 +90,7 @@
   padding-top: 15px;
 }
 
-.usertext-body > div > p, .md > blockquote > p, .md > ul > li {
+.usertext-body > div > p, .md > blockquote > p, .md > ul > li, .md > pre {
   margin-top: 4px;
   font-size: 1.38em;
 }
@@ -158,6 +158,16 @@ a.author.moderator {
 
 span.deepthread {
   font-size: 1.25em;
+}
+
+.md > pre {
+  display: block;
+  font-family: monospace;
+  white-space: pre;
+  border: 1px solid #e6e6de;
+  background-color: #fcfcfb;
+  border-radius: 2px;
+  padding: 5px;
 }
 
 @media (max-width: 999px) {
