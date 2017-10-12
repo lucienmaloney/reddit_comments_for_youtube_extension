@@ -90,7 +90,7 @@
   padding-top: 15px;
 }
 
-.usertext-body > div > p, .md > blockquote > p {
+.usertext-body > div > p, .md > blockquote > p, .md > ul > li {
   margin-top: 4px;
   font-size: 1.38em;
 }
@@ -126,6 +126,38 @@
   margin-left: 5px;
   border-left: 2px solid #c5c1ad;
   color: #4f4f4f;
+}
+
+#reddit_comments > #comments a {
+  text-decoration: none;
+}
+
+#reddit_comments > #comments a:hover {
+  text-decoration: underline;
+}
+
+.md > ul {
+  padding-left: 40px;
+  margin: 10px 0px;
+}
+
+a.author.submitter, a.author.moderator {
+  color: white;
+  padding: 2px;
+  border-radius: 2px;
+  font-weight: bold;
+}
+
+a.author.submitter {
+  background-color: #0055DF;
+}
+
+a.author.moderator {
+  background-color: #4FC761;
+}
+
+span.deepthread {
+  font-size: 1.25em;
 }
 
 @media (max-width: 999px) {
