@@ -86,10 +86,6 @@
   padding-right: 5px;
 }
 
-.entry.unvoted {
-  padding-top: 15px;
-}
-
 .usertext-body > div > p, .md > blockquote > p, .md > ul > li, .md > pre {
   margin-top: 4px;
   font-size: 1.38em;
@@ -97,6 +93,7 @@
 
 .sitetable > .comment > .entry {
   margin-bottom: 2px;
+  padding-top: 15px;
 }
 
 #nothread {
@@ -168,6 +165,25 @@ span.deepthread {
   background-color: #fcfcfb;
   border-radius: 2px;
   padding: 5px;
+}
+
+#reddit_comments > #comments th {
+  font-weight: bold;
+  font-size: 1.38em;
+  padding: 5px;
+  border: 1px solid grey;
+}
+
+#reddit_comments > #comments td {
+  font-size: 1.38em;
+  padding: 5px;
+  border: 1px solid grey;
+}
+
+#reddit_comments > #comments table {
+  margin-top: 5px;
+  border: 1px solid grey;
+  border-collapse: collapse;
 }
 
 @media (max-width: 999px) {
