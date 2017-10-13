@@ -126,6 +126,7 @@ function toggle_expand(elem) {
 }
 
 function append_extension($thread_select, $header, $comments) {
+  $("#loading_roy").remove();
   if(!$("#reddit_comments").length) {
     $("#ticket-shelf").after("<div id='reddit_comments'></div>");
     $("#reddit_comments").append("<div id='top_bar'></div>");
@@ -164,10 +165,14 @@ window.addEventListener("scroll", function(e) {
   const youtube_url = new URL(window.location.href);
   const v = youtube_url.searchParams.get("v");
   if(v !== url) {
-    $("#reddit_comments > #nav").empty();
-    $("#reddit_comments > #title").empty();
-    $("#reddit_comments > #comments").empty();
-    $("#reddit_comments > #top_bar > h2:last-child").empty();
+    if($("#reddit_comments").length) {
+      $("#reddit_comments > #nav").empty();
+      $("#reddit_comments > #title").empty();
+      $("#reddit_comments > #comments").empty();
+      $("#reddit_comments > #top_bar > h2:last-child").empty();
+    } else {
+      $("#ticket-shelf").before("<h2 id='loading_roy'>Loading Reddit On Youtube...</h2>");
+    }
     load_extension();
   }
 });

@@ -10,6 +10,7 @@
 //Correct Links
 //Fix custom styling
 Loading icon
+Prevent fast reloading wrong page
 
 Possible extras:
 Different styling
