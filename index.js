@@ -1,6 +1,5 @@
-// 4 different calls to the reddit api need to be made because
+// 4 different calls to the reddit search api need to be made because
 // youtube url's can take many different forms for the same video
-
 function call1(video_id) {
   return $.ajax({
     url: "https://www.reddit.com/search.json?q=url:https://www.youtube.com/watch?v=" + video_id + "&limit=100"
@@ -25,17 +24,23 @@ function call4(video_id) {
   });
 }
 
+// url variable keeps track of current url so that if it changes we'll be able to tell
 let url = "";
 
 function load_extension() {
+  // The v param of a youtube url is the video's unique id which is needed to get reddit threads about it
   const youtube_url = new URL(window.location.href);
   const v = youtube_url.searchParams.get("v");
-  url = v;
 
+  // Only load extension if v exists, which it won't on pages like the home page or settings
   if(v) {
     $.when(call1(v), call2(v), call3(v), call4(v)).done(function(r1, r2, r3, r4) {
-      const threads = r1[0].data.children.concat(r2[0].data.children).concat(r3[0].data.children).concat(r4[0].data.children);
+      const threads = r1[0].data.children
+                        .concat(r2[0].data.children)
+                        .concat(r3[0].data.children)
+                        .concat(r4[0].data.children);
 
+      // Get threads in alphabetical order so they're easier for the user to navigate:
       const sorted_threads = threads.sort(function(a,b) {
         const suba = a.data.subreddit.toLowerCase();
         const subb = b.data.subreddit.toLowerCase();
@@ -47,10 +52,17 @@ function load_extension() {
       sorted_threads.forEach(function(thread) {
         const t = thread.data;
         const subreddit = "r/" + t.subreddit;
+        // &#8679; is an upvote symbol, &#128172; is a comment symbol
         const forward = `${subreddit}, ${t.score}&#8679;, ${t.num_comments}&#128172;`;
+        // Add in a dynamic number of spaces so that all the video titles line up
         const spaces = "&nbsp".repeat(52 - forward.length);
+        // Chop off titles that are too long to fit on screen:
         const sliced_title = t.title.length < 65 ? t.title : t.title.slice(0, 60) + "...";
-        const $opt = `<option value="${t.permalink}" title="${t.title.replace(/\"/g,'&quot;')}">${forward}${spaces} ${sliced_title}</option>`;
+        
+        const $opt = `<option 
+                        value="${t.permalink}" 
+                        title="${t.title.replace(/\"/g,'&quot;')}"
+                      >${forward}${spaces} ${sliced_title}</option>`;
         $thread_select.append($opt);
       });
 
@@ -126,8 +138,8 @@ function toggle_expand(elem) {
 }
 
 function append_extension($thread_select, $header, $comments) {
-  $("#loading_roy").remove();
   if(!$("#reddit_comments").length) {
+    $("#loading_roy").remove();
     $("#ticket-shelf").after("<div id='reddit_comments'></div>");
     $("#reddit_comments").append("<div id='top_bar'></div>");
     $("#reddit_comments").append("<div id='nav'></div>");
@@ -161,17 +173,27 @@ function append_extension($thread_select, $header, $comments) {
   }
 }
 
+// Youtube doesn't reload pages in a normal manner when you click on a new video, 
+//   making knowing when a user has gone to a new video difficult. None of the provided
+//   event listeners handle all cases, so the best way I found to always be sure the 
+//   right thread is loaded is to just add a scroll listener that tests if the url is
+//   different, and if so, then reload the extension. This will always work because users
+//   always have to scroll to get to the comments.
 window.addEventListener("scroll", function(e) {
-  const youtube_url = new URL(window.location.href);
-  const v = youtube_url.searchParams.get("v");
-  if(v !== url) {
+  if(window.location.href !== url) {
+    url = window.location.href;
+    // Test the root element of the extension, #reddit_comments, to see if extension has already been appended
     if($("#reddit_comments").length) {
+      // If so, empty out its contents so we can insert new content
       $("#reddit_comments > #nav").empty();
       $("#reddit_comments > #title").empty();
       $("#reddit_comments > #comments").empty();
       $("#reddit_comments > #top_bar > h2:last-child").empty();
     } else {
-      $("#ticket-shelf").before("<h2 id='loading_roy'>Loading Reddit On Youtube...</h2>");
+      if(!$("#loading_roy").length) {
+        // If extension not loaded yet, and loading text hasn't already been added, add it
+        $("#ticket-shelf").before("<h2 id='loading_roy'>Loading Reddit On Youtube...</h2>");
+      }
     }
     load_extension();
   }
