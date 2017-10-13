@@ -83,7 +83,7 @@ function load_extension() {
         append_extension(false, "<h3 id='nothread'>No Threads Found</h3>", "");
         $("#reddit_comments > #nav").attr("display", "none");
       }
-    }).fail(display_error_message());
+    }).fail(display_error_message);
   }
 }
 
@@ -115,7 +115,7 @@ function setup_thread(permalink, $thread_select) {
       append_extension($thread_select, header_html, comment_html);
     },
 
-    error: display_error_message()
+    error: display_error_message
   });
 }
 
