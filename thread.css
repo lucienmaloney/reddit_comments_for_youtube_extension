@@ -86,7 +86,7 @@
   padding-right: 5px;
 }
 
-.usertext-body > div > p, .md > blockquote > p, .md > ul > li, .md > pre {
+.usertext-body > div > p, .md > blockquote > p, .md > ul > li, .md > ol > li, .md > pre {
   margin-top: 4px;
   font-size: 1.38em;
 }
@@ -133,7 +133,7 @@
   text-decoration: underline;
 }
 
-.md > ul {
+.md > ul, .md > ol {
   padding-left: 40px;
   margin: 10px 0px;
 }
