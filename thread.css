@@ -219,3 +219,17 @@ span.deepthread {
 .reddit_spoiler:hover::after {
   color: white;
 }
+
+/* Start dark mode */
+
+html[dark] #reddit_comments #comments {
+  color: var(--yt-primary-text-color) !important;
+}
+
+html[dark] #reddit_comments a {
+  
+}
+
+html[dark] #reddit_comments a:hover {
+  
+}
