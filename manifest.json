@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Reddit Comments on Youtube",
-  "version": "1.0.1",
-  "permissions": ["http://*.youtube.com/*", "https://*.youtube.com/*", "http://www.reddit.com/*", "https://www.reddit.com/*"],
+  "version": "1.0.2",
+  "permissions": ["http://www.youtube.com/*", "https://www.youtube.com/*", "http://www.reddit.com/*", "https://www.reddit.com/*"],
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/*"],

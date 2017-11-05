@@ -177,7 +177,10 @@ function append_extension($thread_select, $header, $comments) {
   // So if a link starts with a forward slash we need to replace it with www.reddit.com/
   $("#reddit_comments > #comments").find("a:not(.author)").each(function() {
     const href = this.getAttribute("href");
-    if(href[0] === "/") {
+    if(href === "#s" || href === "/s") {
+      $(this).attr("href", "javascript:void(0)");
+      $(this).addClass("reddit_spoiler");
+    } else if(href[0] === "/") {
       $(this).attr("href", "https://www.reddit.com" + href);
     }
   });

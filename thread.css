@@ -192,3 +192,30 @@ span.deepthread {
     width: 100% !important;
   }
 }
+
+.reddit_spoiler {
+  color: black;
+  background-color: lightgrey;
+  padding: 2px 5px;
+  line-height: 20px;
+}
+
+.reddit_spoiler:hover {
+  color: black;
+  text-decoration: none !important;
+  cursor: text;
+}
+
+.reddit_spoiler::after {
+  content: attr(title);
+  visibility: visible;
+  background-color: #808080;
+  color: #808080;
+  border-radius: 2px;
+  margin-left: 5px;
+  padding: 0px 3px;
+}
+
+.reddit_spoiler:hover::after {
+  color: white;
+}
