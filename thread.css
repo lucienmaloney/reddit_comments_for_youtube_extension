@@ -226,10 +226,34 @@ html[dark] #reddit_comments #comments {
   color: var(--yt-primary-text-color) !important;
 }
 
+html[dark] #reddit_comments #top_bar {
+  color: var(--yt-primary-text-color) !important;
+}
+
 html[dark] #reddit_comments a {
-  
+  color: #2693E6;
 }
 
 html[dark] #reddit_comments a:hover {
-  
+  color: var(--yt-primary-text-color);
+}
+
+html[dark] #reddit_comments .child {
+  border-left-color: #888888 !important;
+}
+
+html[dark] #reddit_comments #thread_select {
+  background-color: #444444;
+  color: var(--yt-primary-text-color);
+  border-color: #444444;
+  border-radius: 2px;
+}
+
+html[dark] .md > blockquote {
+  border-left-color: #777777;
+  color: #888888;
+}
+
+html[dark] a.author.submitter {
+  background-color: #0f05a8;
 }
