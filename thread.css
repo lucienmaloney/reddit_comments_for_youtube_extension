@@ -15,6 +15,9 @@
 #reddit_comments > #nav > #thread_select {
   width: 100%;
   font-family: "Lucida Console", Monaco, monospace;
+  height: 40px;
+  font-size: 12px;
+  background-color: #FDFDFD;
 }
 
 #reddit_comments > #title {
@@ -23,13 +26,15 @@
 
 #reddit_comments > #title {
   width: 100%;
-  margin-top: 25px;
+  margin-top: 10px;
   margin-bottom: 10px;
+  margin-left: 5px;
 }
 
 #reddit_comments > #comments {
   font: normal x-small verdana,arial,helvetica,sans-serif;
   word-wrap: break-word;
+  margin-left: 5px;
 }
 
 #reddit_comments > #title > .title {
@@ -243,7 +248,7 @@ html[dark] #reddit_comments .child {
 }
 
 html[dark] #reddit_comments #thread_select {
-  background-color: #444444;
+  background-color: #444444 !important;
   color: var(--yt-primary-text-color);
   border-color: #444444;
   border-radius: 2px;
