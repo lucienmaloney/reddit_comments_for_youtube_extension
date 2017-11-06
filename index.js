@@ -25,8 +25,13 @@ function call4(video_id) {
 }
 
 function display_error_message() {
-  append_extension(false, "<h3 id='nothread'>Error Loading Reddit Content. ¯\\_(ツ)_/¯</h3>", "");
-  $("#reddit_comments > #nav").attr("display", "none");  
+  if(!navigator.onLine) {
+    append_extension(false, "<h3 id='nothread'>Internet Connection Error. Please check your connection and reload the page.</h3>", "");
+    $("#reddit_comments > #nav").attr("display", "none");     
+  } else {
+    append_extension(false, "<h3 id='nothread'>Unknown Error Loading Reddit Content. Try Reloading the Page</h3>", "");
+    $("#reddit_comments > #nav").attr("display", "none");
+  }
 }
 
 // url variable keeps track of current url so that if it changes we'll be able to tell
