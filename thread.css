@@ -257,3 +257,7 @@ html[dark] .md > blockquote {
 html[dark] a.author.submitter {
   background-color: #0f05a8;
 }
+
+html[dark] #reddit_comments #title {
+  color: var(--yt-primary-text-color);
+}
