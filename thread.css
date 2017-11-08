@@ -266,3 +266,30 @@ html[dark] a.author.submitter {
 html[dark] #reddit_comments #title {
   color: var(--yt-primary-text-color);
 }
+/*
+.gilded-icon:before {
+  background-image: url("./gilded.png");
+}
+*/
+
+.gilded-icon {
+  position: relative;
+  display: inline-block;
+  margin: 0 0 -15px 8px;
+  top: -8px;
+  color: #99895F;
+  font-size: .9em;
+  vertical-align: middle;
+}
+
+.gilded-icon:before {
+  display: inline-block !important;
+  content: '' !important;
+  background-image: url("https://www.redditstatic.com/sprite-reddit.6Om8v6KMv28.png") !important;
+  background-repeat: no-repeat !important;
+  height: 14px !important;
+  width: 13px !important;
+  margin-right: 2px !important;
+  vertical-align: -3px !important;
+  background-position: 0px -1639px !important;
+}

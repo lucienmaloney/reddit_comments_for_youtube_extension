@@ -99,7 +99,7 @@ function clean_reddit_content($content) {
                       .gold-wrap, .expand, .numchildren, .flat-list, .midcol,
                       .domain, .flair, .linkflairlabel, .reportform,
                       .expando-button, .score.likes, .score.dislikes,
-                      .userattrs, .gilded-icon, .morechildren, .parent`;
+                      .userattrs, .morechildren, .parent`;
   $content.find(removables).remove();
   return $content;
 }
@@ -180,7 +180,7 @@ function append_extension($thread_select, $header, $comments) {
   // Go through and update the links on the page to the proper base
   // For example, there might be a link '/r/askreddit' that if we left alone would go to 'www.youtube.com/r/askreddit'
   // So if a link starts with a forward slash we need to replace it with www.reddit.com/
-  $("#reddit_comments > #comments").find("a:not(.author)").each(function() {
+  $("#reddit_comments > #comments, #reddit_comments > #title").find("a:not(.author)").each(function() {
     const href = this.getAttribute("href");
     if(href === "#s" || href === "/s") {
       $(this).attr("href", "javascript:void(0)");
