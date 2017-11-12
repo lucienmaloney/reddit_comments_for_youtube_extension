@@ -99,7 +99,7 @@ function clean_reddit_content($content) {
                       .gold-wrap, .expand, .numchildren, .flat-list, .midcol,
                       .domain, .flair, .linkflairlabel, .reportform,
                       .expando-button, .score.likes, .score.dislikes,
-                      .userattrs, .morechildren, .parent`;
+                      .userattrs, .parent`;
   $content.find(removables).remove();
   return $content;
 }
@@ -143,6 +143,61 @@ function toggle_expand(elem) {
   }
 }
 
+function morechildren(e, t, n, i, s, o) {
+  function httpGetAsync(theUrl, callback) {
+      var xmlHttp = new XMLHttpRequest();
+      xmlHttp.onreadystatechange = function() { 
+          if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+              callback(xmlHttp.responseText);
+      }
+      xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+      xmlHttp.send(null);
+  }
+
+  function decodeHTMLEntities(text) {
+      var entities = [
+          ['amp', '&'],
+          ['apos', '\''],
+          ['#x27', '\''],
+          ['#x2F', '/'],
+          ['#39', '\''],
+          ['#47', '/'],
+          ['lt', '<'],
+          ['gt', '>'],
+          ['nbsp', ' '],
+          ['quot', '"']
+      ];
+
+      for (var i = 0, max = entities.length; i < max; ++i) 
+          text = text.replace(new RegExp('&'+entities[i][0]+';', 'g'), entities[i][1]);
+
+      return text;
+  }
+
+  const u = e.id.slice(5, 100);
+
+  httpGetAsync(`https://cors-anywhere.herokuapp.com/https://www.reddit.com/api/morechildren?link_id=${t}&sort=${n}&children=${i}&depth=${s}&id=${u}&limit_children=${o}`, function(response) {
+    const children = JSON.parse(response).jquery[10][3][0];
+    const eroot = e.parentElement.parentElement.parentElement;
+    eroot.innerHTML = "";
+    const parser = new DOMParser();
+    children.forEach((c) => {
+      //console.log(c);
+      const content = decodeHTMLEntities(c.data.content);
+      //content = content.replace(/\&lt\;/g, "<");
+      //content = content.replace(/\&gt\;/g, ">");
+      //console.log(content);
+      const htmlDoc = parser.parseFromString(content, "text/html");
+      //console.log(htmlDoc, htmlDoc.getElementsByTagName('div'));
+      //console.log(div, typeof div);
+      eroot.appendChild(htmlDoc.getElementsByTagName('div')[0]);
+    });
+    const removables = eroot.querySelectorAll(".flat-list.buttons, .likes, .dislikes, .numchildren, .expand, .parent, .midcol");
+    console.log(removables);
+    Array.prototype.forEach.call(removables, e => e.remove());
+  });
+}
+
 function append_extension($thread_select, $header, $comments) {
   // If extension not already appended, append it:
   if(!$("#reddit_comments").length) {
@@ -161,7 +216,7 @@ function append_extension($thread_select, $header, $comments) {
                       Reddit On Youtube</h2>`;
     $("#reddit_comments > #top_bar").append(expander + "<h2></h2>");
     // Append a short script to the page that so that clicks can be handled:
-    $("#reddit_comments").append(`<script>${click_thing.toString() + toggle_expand.toString()}</script>`);
+    $("#reddit_comments").append(`<script>${click_thing.toString() + toggle_expand.toString() + morechildren.toString()}</script>`);
   }
 
   // If passed a new thread dropdown, replace the old one

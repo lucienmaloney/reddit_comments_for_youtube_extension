@@ -96,9 +96,9 @@
   font-size: 1.38em;
 }
 
-.sitetable > .comment > .entry {
+.comment > .entry {
   margin-bottom: 2px;
-  padding-top: 15px;
+  padding-top: 15px !important;
 }
 
 #nothread {
@@ -292,4 +292,8 @@ html[dark] #reddit_comments #title {
   margin-right: 2px !important;
   vertical-align: -3px !important;
   background-position: 0px -1639px !important;
+}
+
+.morechildren {
+  margin-top: 10px;
 }
