@@ -181,7 +181,6 @@ function morechildren(e, t, n, i, s, o) {
 
   httpGetAsync(`https://cors-anywhere.herokuapp.com/https://www.reddit.com/api/morechildren?link_id=${t}&sort=${n}&children=${i}&depth=${s}&id=${u}&limit_children=${o}`, function(response) {
     const children = JSON.parse(response).jquery[10][3][0];
-    console.log(children, JSON.parse(response).jquery[10][3]);
     const eroot = morechildren.parentElement;
     morechildren.remove();
     const parser = new DOMParser();
@@ -191,13 +190,24 @@ function morechildren(e, t, n, i, s, o) {
       const content = decodeHTMLEntities(c.data.content);
       site_table.id = "siteTable_" + c.data.id;
       const htmlDoc = parser.parseFromString(content, "text/html");
-      console.log(c.data);
-      console.log("siteTable_" + c.data.parent);
+      // Append the new comment to the sitetable of its parent comment:
       document.getElementById("siteTable_" + c.data.parent).appendChild(htmlDoc.getElementsByTagName('div')[0]);
+      // Append a sitetable to the newly added comment so that further comments can be appended:
       document.querySelector(`.report-${c.data.id}`).parentElement.parentElement.querySelector(".child").appendChild(site_table);
     });
+    // Fix content for display by removing unwanted elements and changing the domain of the links from youtube to reddit:
     const removables = eroot.querySelectorAll(".flat-list.buttons, .likes, .dislikes, .numchildren, .expand, .parent, .midcol");
     Array.prototype.forEach.call(removables, e => e.remove());
+    const links = eroot.querySelectorAll("a:not(.author)");
+    Array.prototype.forEach.call(links, function(a) {
+      const href = a.getAttribute("href");
+      if(href === "#s" || href === "/s") {
+        a.href = "javascript:void(0)";
+        a.className += " reddit_spoiler";
+      } else if(href[0] === "/") {
+        a.href = "https://www.reddit.com" + href;
+      }      
+    });
   });
 }
 
