@@ -297,3 +297,9 @@ html[dark] #reddit_comments #title {
 .morechildren {
   margin-top: 7px;
 }
+
+.morecomments a {
+  color: #0000DD;
+  font-size: smaller;
+  font-weight: bold;
+}

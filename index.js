@@ -292,8 +292,6 @@ window.addEventListener("scroll", function(e) {
 });
 
 //TODO:
-// Fix links in loaded comments
 // Clean up loading comments code
 // Add in controversial symbol
 // Add settings
-// Fix load more comments font
