@@ -290,8 +290,3 @@ window.addEventListener("scroll", function(e) {
     load_extension();
   }
 });
-
-//TODO:
-// Clean up loading comments code
-// Add in controversial symbol
-// Add settings

@@ -303,3 +303,10 @@ html[dark] #reddit_comments #title {
   font-size: smaller;
   font-weight: bold;
 }
+
+.comment.controversial > .entry .score::after {
+  content: "†";
+  position: relative;
+  top: -2px;
+  color: #CC0000;
+}
