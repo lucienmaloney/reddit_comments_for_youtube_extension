@@ -155,45 +155,48 @@ function morechildren(e, t, n, i, s, o) {
   }
 
   function decodeHTMLEntities(text) {
-      var entities = [
-          ['amp', '&'],
-          ['apos', '\''],
-          ['#x27', '\''],
-          ['#x2F', '/'],
-          ['#39', '\''],
-          ['#47', '/'],
-          ['lt', '<'],
-          ['gt', '>'],
-          ['nbsp', ' '],
-          ['quot', '"']
-      ];
+    var entities = [
+        ['amp', '&'],
+        ['apos', '\''],
+        ['#x27', '\''],
+        ['#x2F', '/'],
+        ['#39', '\''],
+        ['#47', '/'],
+        ['lt', '<'],
+        ['gt', '>'],
+        ['nbsp', ' '],
+        ['quot', '"']
+    ];
 
-      for (var i = 0, max = entities.length; i < max; ++i) 
-          text = text.replace(new RegExp('&'+entities[i][0]+';', 'g'), entities[i][1]);
+    for (var i = 0, max = entities.length; i < max; ++i) {
+      text = text.replace(new RegExp('&'+entities[i][0]+';', 'g'), entities[i][1]);
+    }
 
-      return text;
+    return text;
   }
 
   const u = e.id.slice(5, 100);
+  e.style.color = "red";
+  const morechildren = e.parentElement.parentElement.parentElement;
 
   httpGetAsync(`https://cors-anywhere.herokuapp.com/https://www.reddit.com/api/morechildren?link_id=${t}&sort=${n}&children=${i}&depth=${s}&id=${u}&limit_children=${o}`, function(response) {
     const children = JSON.parse(response).jquery[10][3][0];
-    const eroot = e.parentElement.parentElement.parentElement;
-    eroot.innerHTML = "";
+    console.log(children, JSON.parse(response).jquery[10][3]);
+    const eroot = morechildren.parentElement;
+    morechildren.remove();
     const parser = new DOMParser();
     children.forEach((c) => {
-      //console.log(c);
+      const site_table = document.createElement("div");
+      site_table.class = "sitetable listing";
       const content = decodeHTMLEntities(c.data.content);
-      //content = content.replace(/\&lt\;/g, "<");
-      //content = content.replace(/\&gt\;/g, ">");
-      //console.log(content);
+      site_table.id = "siteTable_" + c.data.id;
       const htmlDoc = parser.parseFromString(content, "text/html");
-      //console.log(htmlDoc, htmlDoc.getElementsByTagName('div'));
-      //console.log(div, typeof div);
-      eroot.appendChild(htmlDoc.getElementsByTagName('div')[0]);
+      console.log(c.data);
+      console.log("siteTable_" + c.data.parent);
+      document.getElementById("siteTable_" + c.data.parent).appendChild(htmlDoc.getElementsByTagName('div')[0]);
+      document.querySelector(`#thing_${c.data.id} > .child`).appendChild(site_table);
     });
     const removables = eroot.querySelectorAll(".flat-list.buttons, .likes, .dislikes, .numchildren, .expand, .parent, .midcol");
-    console.log(removables);
     Array.prototype.forEach.call(removables, e => e.remove());
   });
 }
@@ -277,3 +280,11 @@ window.addEventListener("scroll", function(e) {
     load_extension();
   }
 });
+
+//TODO:
+// Fix links in loaded comments
+// Fix loading comments
+// Clean up loading comments code
+// Add in controversial symbol
+// Add settings
+// Fix load more comments font
