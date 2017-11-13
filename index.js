@@ -194,7 +194,7 @@ function morechildren(e, t, n, i, s, o) {
       console.log(c.data);
       console.log("siteTable_" + c.data.parent);
       document.getElementById("siteTable_" + c.data.parent).appendChild(htmlDoc.getElementsByTagName('div')[0]);
-      document.querySelector(`#thing_${c.data.id} > .child`).appendChild(site_table);
+      document.querySelector(`.report-${c.data.id}`).parentElement.parentElement.querySelector(".child").appendChild(site_table);
     });
     const removables = eroot.querySelectorAll(".flat-list.buttons, .likes, .dislikes, .numchildren, .expand, .parent, .midcol");
     Array.prototype.forEach.call(removables, e => e.remove());
@@ -283,7 +283,6 @@ window.addEventListener("scroll", function(e) {
 
 //TODO:
 // Fix links in loaded comments
-// Fix loading comments
 // Clean up loading comments code
 // Add in controversial symbol
 // Add settings
