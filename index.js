@@ -2,25 +2,25 @@
 // youtube url's can take many different forms for the same video
 function call1(video_id) {
   return $.ajax({
-    url: "https://www.reddit.com/search.json?q=url:https://www.youtube.com/watch?v=" + video_id + "&limit=100"
+    url: "https://www.reddit.com/api/info.json?url=https://www.youtube.com/watch?v=" + video_id + "&limit=100"
   });
 }
 
 function call2(video_id) {
   return $.ajax({
-    url: "https://www.reddit.com/search.json?q=url:http://www.youtube.com/watch?v=" + video_id + "&limit=100"
+    url: "https://www.reddit.com/api/info.json?url=http://www.youtube.com/watch?v=" + video_id + "&limit=100"
   });
 }
 
 function call3(video_id) {
   return $.ajax({
-    url: "https://www.reddit.com/search.json?q=url:https://youtu.be/" + video_id + "&limit=100"
+    url: "https://www.reddit.com/api/info.json?url=https://youtu.be/" + video_id + "&limit=100"
   });
 }
 
 function call4(video_id) {
   return $.ajax({
-    url: "https://www.reddit.com/search.json?q=url:http://youtu.be/" + video_id + "&limit=100"
+    url: "https://www.reddit.com/api/info.json?url=http://youtu.be/" + video_id + "&limit=100"
   });
 }
 
