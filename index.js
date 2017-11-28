@@ -44,10 +44,12 @@ function load_extension() {
                         .concat(r7[0].data.children)
                         .concat(r8[0].data.children);
 
+      const filtered = threads.filter(t => !t.data.promoted);
+
       // If there is at least 1 thread:
-      if(threads.length) {
+      if(filtered.length) {
         // Get threads in alphabetical order so they're easier for the user to navigate:
-        let sorted_threads = threads.sort(function(a,b) {
+        sorted_threads = filtered.sort(function(a,b) {
           const suba = a.data.subreddit.toLowerCase();
           const subb = b.data.subreddit.toLowerCase();
           const namea = a.data.name.toLowerCase();
