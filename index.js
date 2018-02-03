@@ -78,9 +78,12 @@ function load_extension() {
           // Chop off titles that are too long to fit on screen:
           const sliced_title = t.title.length < 65 ? t.title : t.title.slice(0, 60) + "...";
 
+          const time = t.url.match(/(\#|\?|\&)t\=\d+(m\d+s)?/);
+
           const $opt = `<option 
                           value="${t.permalink}" 
                           title="${t.title.replace(/\"/g,'&quot;')}"
+                          time="${time ? time[0].slice(3) : ''}"
                         >${forward}${spaces} ${sliced_title}</option>`;
           $thread_select.append($opt);
         });
@@ -88,7 +91,7 @@ function load_extension() {
         $thread_select.on('change', function(event) {
           $("#reddit_comments > #comments").empty();
           $("#reddit_comments > #title").empty().html("<h1>Loading Thread...</h1>");
-          setup_thread(event.target.value);
+          setup_thread(event.target.value, null, $($("option:selected", this)[0]).attr("time"));
         });
         setup_thread(sorted_threads[0].data.permalink, $thread_select);
       } else {
@@ -111,7 +114,7 @@ function clean_reddit_content($content) {
   return $content;
 }
 
-function setup_thread(permalink, $thread_select) {
+function setup_thread(permalink, $thread_select, time) {
   $.ajax({
     url: "https://www.reddit.com" + permalink,
 
@@ -124,7 +127,7 @@ function setup_thread(permalink, $thread_select) {
       const header_html = $page.find(".top-matter")[0].innerHTML;
       const comment_html = $page.find(".commentarea")[0].innerHTML;
 
-      append_extension($thread_select, header_html, comment_html);
+      append_extension($thread_select, header_html, comment_html, time);
     },
 
     error: display_error_message
@@ -218,7 +221,7 @@ function morechildren(e, t, n, i, s, o) {
   });
 }
 
-function append_extension($thread_select, $header, $comments) {
+function append_extension($thread_select, $header, $comments, time) {
   // If extension not already appended, append it:
   if(!$("#reddit_comments").length) {
     $("#loading_roy").remove();
@@ -269,6 +272,12 @@ function append_extension($thread_select, $header, $comments) {
     const subreddit = $("#reddit_comments > #nav > select").find(":selected")[0].innerHTML.split(",")[0];
     const sub_link = `<a class="author" href="${'https://www.reddit.com/' + subreddit}">${subreddit}</a>`;
     $("#reddit_comments > #title > .tagline").append(" to " + sub_link);
+  }
+
+  if(time) {
+    $("div#title > p.title").append(
+      `<a class="title titleTime" href="${window.location.href + '&t=' + time}">[${time}]</title>
+    `);
   }
 }
 

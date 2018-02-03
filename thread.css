@@ -235,6 +235,10 @@ span.deepthread {
   -webkit-margin-after: 0em !important;  
 }
 
+.titleTime {
+  margin-left: 20px;
+}
+
 /* Start dark mode */
 
 html[dark] #reddit_comments #comments {
