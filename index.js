@@ -68,7 +68,9 @@ function load_extension() {
         
         let $thread_select = $("<select id='thread_select'></select>");
 
-        sorted_threads.forEach(function(thread) {
+        let starterTime = "";
+
+        sorted_threads.forEach(function(thread, i) {
           const t = thread.data;
           const subreddit = "r/" + t.subreddit;
           // &#8679; is an upvote symbol, &#128172; is a comment symbol
@@ -78,12 +80,24 @@ function load_extension() {
           // Chop off titles that are too long to fit on screen:
           const sliced_title = t.title.length < 65 ? t.title : t.title.slice(0, 60) + "...";
 
-          const time = t.url.match(/(\#|\?|\&)t\=\d+(m\d+s)?/);
+          let time = t.url.match(/(\#|\?|\&)t\=\d+(m\d+s)?/);
+          if(time) {
+            time = time[0].slice(3);
+            if(!isNaN(time)) {
+              time = `${parseInt(parseInt(time) / 60)}m${parseInt(time) % 60}s`;
+            }
+          } else {
+            time = "";
+          }
+
+          if(i === 0) {
+            starterTime = time;
+          }
 
           const $opt = `<option 
                           value="${t.permalink}" 
                           title="${t.title.replace(/\"/g,'&quot;')}"
-                          time="${time ? time[0].slice(3) : ''}"
+                          time="${time}"
                         >${forward}${spaces} ${sliced_title}</option>`;
           $thread_select.append($opt);
         });
@@ -93,7 +107,7 @@ function load_extension() {
           $("#reddit_comments > #title").empty().html("<h1>Loading Thread...</h1>");
           setup_thread(event.target.value, null, $($("option:selected", this)[0]).attr("time"));
         });
-        setup_thread(sorted_threads[0].data.permalink, $thread_select);
+        setup_thread(sorted_threads[0].data.permalink, $thread_select, starterTime);
       } else {
         append_extension(false, "<h3 id='nothread'>No Threads Found</h3>", "");
         $("#reddit_comments > #nav").attr("display", "none");
