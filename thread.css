@@ -98,7 +98,7 @@
 
 .comment > .entry {
   margin-bottom: 2px;
-  padding-top: 15px !important;
+  padding-top: 12px !important;
 }
 
 #nothread {
@@ -223,6 +223,16 @@ span.deepthread {
 
 .reddit_spoiler:hover::after {
   color: white;
+}
+
+#reddit_comments h2 {
+  -webkit-margin-before: 0em !important;
+  -webkit-margin-after: 0em !important;
+}
+
+#reddit_comments p {
+  margin-top: 3px; !important;
+  -webkit-margin-after: 0em !important;  
 }
 
 /* Start dark mode */
