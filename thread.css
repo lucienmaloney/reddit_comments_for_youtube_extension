@@ -62,7 +62,7 @@
 }
 
 .child {
-  padding-left: 20px;
+  padding-left: 30px;
   border-left: 1px solid #dee5e7;
 }
 
@@ -237,6 +237,46 @@ span.deepthread {
 
 .titleTime {
   margin-left: 10px;
+}
+
+.midcol {
+  visibility: visible;
+  width: 0px;
+  height: 0px;
+  /*float: left;*/
+  background: transparent;
+  overflow: visible;
+  /*padding-top: 12px !important;
+  margin-right: 15px;*/
+  position: relative;
+  top: 18px;
+  right: 20px;
+}
+
+.arrow.up {
+  background-image: url(https://www.redditstatic.com/sprite-reddit.bTLvdEETokI.png);
+  background-position: -42px -1647px;
+  background-repeat: no-repeat;
+}
+
+.arrow.down {
+  background-image: url(https://www.redditstatic.com/sprite-reddit.bTLvdEETokI.png);
+  background-position: 0px -1647px;
+  background-repeat: no-repeat;
+}
+
+.arrow {
+  margin: 2px 0px 0px 0px;
+  width: 100%;
+  height: 14px;
+  display: block;
+  cursor: pointer;
+  background-position: center center;
+  background-repeat: no-repeat;
+  width: 15px;
+  margin-left: auto;
+  margin-right: auto;
+  outline: none;
 }
 
 /* Start dark mode */
