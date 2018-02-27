@@ -120,10 +120,10 @@ function clean_reddit_content($content) {
   // Reddit threads have a lot of html content that for this simplified extension
   //   are unnecessary. The following is the list of all things that aren't needed.
   const removables = `script, .cloneable, .panestack-title, .menuarea,
-                      .gold-wrap, .expand, .numchildren, .flat-list,
+                      .gold-wrap, .numchildren, .flat-list,
                       .domain, .flair, .linkflairlabel, .reportform,
                       .expando-button, .score.likes, .score.dislikes,
-                      .userattrs, .parent`;
+                      .userattrs, .parent, .arrow`;
   $content.find(removables).remove();
   return $content;
 }
@@ -166,6 +166,9 @@ function toggle_expand(elem) {
     elem.innerHTML = "[-]";
   }
 }
+
+// This next line is something else entirely. I wouldn't recommend touching it.
+function togglecomment(e){var t=e.parentElement.parentElement.parentElement,r=t.classList.contains("collapsed");t.classList.toggle("collapsed");t.classList.toggle("noncollapsed");e.innerHTML = (r?"[–]":"[+]")};
 
 function morechildren(e, t, n, i, s, o) {
   function httpGetAsync(theUrl, callback) {
@@ -253,7 +256,7 @@ function append_extension($thread_select, $header, $comments, time) {
                       Reddit On Youtube</h2>`;
     $("#reddit_comments > #top_bar").append(expander + "<h2></h2>");
     // Append a short script to the page that so that clicks can be handled:
-    $("#reddit_comments").append(`<script>${click_thing.toString() + toggle_expand.toString() + morechildren.toString()}</script>`);
+    $("#reddit_comments").append(`<script>${click_thing.toString() + toggle_expand.toString() + morechildren.toString() + togglecomment.toString()}</script>`);
   }
 
   // If passed a new thread dropdown, replace the old one
