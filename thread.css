@@ -55,6 +55,7 @@
 #reddit_comments > #top_bar {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 1px;
 }
 
 .live-timestamp {
@@ -263,6 +264,15 @@ span.deepthread {
   overflow: hidden;
 }
 
+#mySortSelect {
+  display: flex;
+}
+
+#mySortSelect > select {
+  position: relative;
+  bottom: 1px;
+}
+
 /* Start dark mode */
 
 html[dark] #reddit_comments #comments {
@@ -285,7 +295,7 @@ html[dark] #reddit_comments .child {
   border-left-color: #888888 !important;
 }
 
-html[dark] #reddit_comments #thread_select {
+html[dark] #reddit_comments #thread_select, html[dark] #mySortSelect > select {
   background-color: #444444 !important;
   color: var(--yt-primary-text-color);
   border-color: #444444;

@@ -15,5 +15,8 @@
     "16": "16px_icon.png",
     "48": "48px_icon.png",
     "128": "128_icon.png"
-  }
+  },
+  "permissions": [
+    "storage"
+  ]
 }

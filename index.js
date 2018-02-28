@@ -24,6 +24,11 @@ function display_error_message() {
   }
 }
 
+let sort = null;
+chrome.storage.sync.get("sort", function(items) {
+  sort = items.sort ? items.sort : "votes";
+});
+
 // url variable keeps track of current url so that if it changes we'll be able to tell
 let url = "";
 
@@ -50,11 +55,11 @@ function load_extension() {
       if(filtered.length) {
         // Get threads in alphabetical order so they're easier for the user to navigate:
         sorted_threads = filtered.sort(function(a,b) {
-          const suba = a.data.subreddit.toLowerCase();
-          const subb = b.data.subreddit.toLowerCase();
+          const conda = sort === "subreddit" ? a.data.subreddit.toLowerCase() : sort === "votes" ? b.data.score : b.data.num_comments;
+          const condb = sort === "subreddit" ? b.data.subreddit.toLowerCase() : sort === "votes" ? a.data.score : a.data.num_comments;
           const namea = a.data.name.toLowerCase();
           const nameb = b.data.name.toLowerCase();
-          return ((suba < subb) ? -1 : ((suba > subb) ? 1 : ((namea < nameb) ? -1 : 1)));
+          return ((conda < condb) ? -1 : ((conda > condb) ? 1 : ((namea < nameb) ? -1 : 1)));
         });
 
         // Filter duplicates:
@@ -267,6 +272,32 @@ function append_extension($thread_select, $header, $comments, time) {
     $("#reddit_comments > #top_bar > h2:last-child").html(thread_text);
 
     $("#reddit_comments > #nav").empty().append($thread_select);
+
+    if(!$("#mySortSelect").length) {
+      let $sort_select = $(`
+        <div id="mySortSelect">
+          <h2>Sort By:&nbsp;</h2>
+          <select>
+            <option value="subreddit" title="Subreddit" ${sort === "subreddit" ? "selected" : ""}>Subreddit</option>
+            <option value="comments" title="Comments" ${sort === "comments" ? "selected" : ""}>Comments</option>
+            <option value="votes" title="Score" ${sort === "votes" ? "selected" : ""}>Score</option>
+          </select>
+        </div>
+      `);
+
+      $sort_select.on("change", function(event) {
+        const new_sort = event.target.value;
+        if(new_sort !== sort) {
+          chrome.storage.sync.set({"sort": new_sort}, function() {
+            sort = new_sort;
+            $("#reddit_comments").remove();
+            load_extension();
+          });
+        }
+      });
+
+      $("#reddit_comments > #top_bar").append($sort_select);
+    }
   }
 
   $("#reddit_comments > #title").empty().append($header);
