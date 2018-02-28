@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Reddit Comments on Youtube",
-  "version": "1.2.0",
-  "permissions": ["http://www.youtube.com/*", "https://www.youtube.com/*", "http://www.reddit.com/*", "https://www.reddit.com/*"],
+  "version": "1.2.1",
+  "permissions": ["http://www.youtube.com/*", "https://www.youtube.com/*", "http://www.reddit.com/*", "https://www.reddit.com/*", "storage"],
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/*"],
@@ -15,8 +15,5 @@
     "16": "16px_icon.png",
     "48": "48px_icon.png",
     "128": "128_icon.png"
-  },
-  "permissions": [
-    "storage"
-  ]
+  }
 }
