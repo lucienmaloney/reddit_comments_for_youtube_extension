@@ -136,7 +136,7 @@ function clean_reddit_content($content) {
 
 function setup_thread(permalink, $thread_select, time) {
   $.ajax({
-    url: "https://cors-anywhere.herokuapp.com/https://old.reddit.com" + permalink,
+    url: "https://old.reddit.com" + permalink,
 
     success: function(data) {
       let $page = $(data);
@@ -259,7 +259,7 @@ function append_extension($thread_select, $header, $comments, time) {
                           href="javascript:void(0)" 
                           onclick="return toggle_expand(this)"
                         >[-]</a> 
-                      Reddit On YouTube</h2>`;
+                      Reddit for YouTube</h2>`;
     $("#reddit_comments > #top_bar").append(expander + "<h2></h2>");
     // Append a short script to the page that so that clicks can be handled:
     $("#reddit_comments").append(`<script>${click_thing.toString() + toggle_expand.toString() + morechildren.toString() + togglecomment.toString()}</script>`);
