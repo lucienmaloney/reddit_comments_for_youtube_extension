@@ -1,8 +1,8 @@
-// The reddit search api is super inconsistent, like unbelievably inconsistent
+// The Reddit search API is super inconsistent, like unbelievably inconsistent
 // The exact same request can return different results in different browsers even
-// Add on to that the fact that youtube url's can take many different forms
+// Add on to that the fact that YouTube URLs can take many different forms
 // So, basically, the only way to ensure that as many reddit threads as possible are found is to send
-//   a bunch of similar, but slightly different requests
+// a bunch of similar, but slightly different requests
 // This seems crazy, and it is, but believe me when I say there is no better way to do this:
 
 const call1 = video_id => $.ajax({url: "https://www.reddit.com/api/info.json?url=https://www.youtube.com/watch?v=" + video_id + "&limit=100"});
@@ -29,11 +29,11 @@ chrome.storage.sync.get("sort", function(items) {
   sort = items.sort ? items.sort : "votes";
 });
 
-// url variable keeps track of current url so that if it changes we'll be able to tell
+// url variable keeps track of current URL so that if it changes we'll be able to tell
 let url = "";
 
 function load_extension() {
-  // The v param of a youtube url is the video's unique id which is needed to get reddit threads about it
+  // The v param of a YouTube URL is the video's unique ID which is needed to get Reddit threads about it
   const youtube_url = new URL(window.location.href);
   const v = youtube_url.searchParams.get("v");
 
@@ -122,20 +122,21 @@ function load_extension() {
 }
 
 function clean_reddit_content($content) {
-  // Reddit threads have a lot of html content that for this simplified extension
-  //   are unnecessary. The following is the list of all things that aren't needed.
+  // Reddit threads have a lot of HTML content that, for this simplified extension,
+  // are unnecessary. The following is the list of all things that aren't needed.
   const removables = `script, .cloneable, .panestack-title, .menuarea,
                       .gold-wrap, .numchildren, .flat-list,
                       .domain, .flair, .linkflairlabel, .reportform,
                       .expando-button, .score.likes, .score.dislikes,
-                      .userattrs, .parent, .arrow`;
+                      .userattrs, .parent, .arrow, .commentsignupbar__container,
+                      .promoted`;
   $content.find(removables).remove();
   return $content;
 }
 
 function setup_thread(permalink, $thread_select, time) {
   $.ajax({
-    url: "https://www.reddit.com" + permalink,
+    url: "https://cors-anywhere.herokuapp.com/https://old.reddit.com" + permalink,
 
     success: function(data) {
       let $page = $(data);
@@ -154,12 +155,12 @@ function setup_thread(permalink, $thread_select, time) {
 }
 
 function click_thing(e) {
-  // Lots of elements in the reddit comments have onclick handlers that call a function "click_thing()"
+  // Lots of elements in the Reddit comments have onclick handlers that call a function "click_thing()"
   // In order to prevent a console error about an undefined function, this empty function is inserted in 
-  //   a script on the page
+  // a script on the page
 }
 
-// This function handles the clicking of the expand button so a user can hide the reddit extension
+// This function handles the clicking of the expand button so a user can hide the Reddit extension
 function toggle_expand(elem) {
   document.querySelector("#reddit_comments > #nav").classList.toggle("reddit_hidden");
   document.querySelector("#reddit_comments > #title").classList.toggle("reddit_hidden");
@@ -227,7 +228,7 @@ function morechildren(e, t, n, i, s, o) {
       // Append a sitetable to the newly added comment so that further comments can be appended:
       document.querySelector(`.report-${c.data.id}`).parentElement.parentElement.querySelector(".child").appendChild(site_table);
     });
-    // Fix content for display by removing unwanted elements and changing the domain of the links from youtube to reddit:
+    // Fix content for display by removing unwanted elements and changing the domain of the links from YouTube to Reddit:
     const removables = eroot.querySelectorAll(".flat-list.buttons, .likes, .dislikes, .numchildren, .expand, .parent, .midcol");
     Array.prototype.forEach.call(removables, e => e.remove());
     const links = eroot.querySelectorAll("a:not(.author)");
@@ -258,7 +259,7 @@ function append_extension($thread_select, $header, $comments, time) {
                           href="javascript:void(0)" 
                           onclick="return toggle_expand(this)"
                         >[-]</a> 
-                      Reddit On Youtube</h2>`;
+                      Reddit On YouTube</h2>`;
     $("#reddit_comments > #top_bar").append(expander + "<h2></h2>");
     // Append a short script to the page that so that clicks can be handled:
     $("#reddit_comments").append(`<script>${click_thing.toString() + toggle_expand.toString() + morechildren.toString() + togglecomment.toString()}</script>`);
@@ -329,12 +330,12 @@ function append_extension($thread_select, $header, $comments, time) {
   }
 }
 
-// Youtube doesn't reload pages in a normal manner when you click on a new video, 
-//   making knowing when a user has gone to a new video difficult. None of the provided
-//   event listeners handle all cases, so the best way I found to always be sure the 
-//   right thread is loaded is to just add a scroll listener that tests if the url is
-//   different, and if so, then reload the extension. This will always work because users
-//   always have to scroll to get to the comments.
+// YouTube doesn't reload pages in a normal manner when you click on a new video, 
+// making knowing when a user has gone to a new video difficult. None of the provided
+// event listeners handle all cases, so the best way I found to always be sure the 
+// right thread is loaded is to just add a scroll listener that tests if the url is
+// different, and if so, then reload the extension. This will always work because users
+// always have to scroll to get to the comments.
 window.addEventListener("scroll", function(e) {
   if(window.location.href !== url) {
     url = window.location.href;
@@ -348,7 +349,7 @@ window.addEventListener("scroll", function(e) {
     } else {
       if(!$("#loading_roy").length) {
         // If extension not loaded yet, and loading text hasn't already been added, add it
-        $("#ticket-shelf").before("<h2 id='loading_roy'>Loading Reddit On Youtube...</h2>");
+        $("#ticket-shelf").before("<h2 id='loading_roy'>Loading Reddit for YouTube...</h2>");
       }
     }
     load_extension();
