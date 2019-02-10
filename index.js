@@ -65,7 +65,7 @@ function load_extension() {
         // Filter duplicates:
         for(let i = 0; i < sorted_threads.length - 1; i++) {
           if(sorted_threads[i] && sorted_threads[i + 1]) {
-            if(sorted_threads[i].data.name === sorted_threads[i + 1].data.name) {
+            if(sorted_threads[i].data.permalink === sorted_threads[i + 1].data.permalink) {
               sorted_threads.splice(i + 1, 1);
             }
           }
@@ -267,11 +267,6 @@ function append_extension($thread_select, $header, $comments, time) {
 
   // If passed a new thread dropdown, replace the old one
   if($thread_select) {
-    const thread_number = $thread_select.children().length;
-    const thread_text = thread_number === 1 ? "1 Thread" : thread_number + " Threads";
-
-    $("#reddit_comments > #top_bar > h2:last-child").html(thread_text);
-
     $("#reddit_comments > #nav").empty().append($thread_select);
 
     if(!$("#mySortSelect").length) {
