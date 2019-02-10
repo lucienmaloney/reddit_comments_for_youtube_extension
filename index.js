@@ -260,7 +260,7 @@ function append_extension($thread_select, $header, $comments, time) {
         $("#reddit_comments").append("<div id='nav'></div>");
         $("#reddit_comments").append("<div id='title'></div>");
         $("#reddit_comments").append("<div id='comments'></div>");
-        const expander = `<h2><a id="expand" href="javascript:void(0)" onclick="return toggle_expand(this)">[-]</a>Reddit Comments</h2>`;
+        const expander = `<h2><a id="expand" href="javascript:void(0)" onclick="return toggle_expand(this)">[-]</a> Reddit Comments</h2>`;
         $("#reddit_comments > #top_bar").append(expander + "<h2></h2>");
         // Append a short script to the page that so that clicks can be handled:
         $("#reddit_comments").append(`<script>${click_thing.toString() + toggle_expand.toString() + morechildren.toString() + togglecomment.toString()}</script>`);
