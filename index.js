@@ -274,9 +274,9 @@ function append_extension($thread_select, $header, $comments, time) {
         <div id="mySortSelect">
           <h2>Sort By:&nbsp;</h2>
           <select>
-            <option value="subreddit" title="Subreddit" ${sort === "subreddit" ? "selected" : ""}>Subreddit</option>
-            <option value="comments" title="Comments" ${sort === "comments" ? "selected" : ""}>Comments</option>
             <option value="votes" title="Score" ${sort === "votes" ? "selected" : ""}>Score</option>
+            <option value="comments" title="Comments" ${sort === "comments" ? "selected" : ""}>Comments</option>
+            <option value="subreddit" title="Subreddit" ${sort === "subreddit" ? "selected" : ""}>Subreddit</option>
           </select>
         </div>
       `);
