@@ -24,6 +24,15 @@ function display_error_message() {
     }
 }
 
+function isDupe(item, array) {
+    for (let i = 0; i < array.length; i++) {
+        if (item.data.permalink == array[i].data.permalink) {
+            return true;
+        }
+    }
+    return false;
+}
+
 let sort = null;
 chrome.storage.sync.get("sort", function(items) {
     sort = items.sort ? items.sort : "votes";
@@ -63,13 +72,14 @@ function load_extension() {
                 });
 
                 // Filter duplicates:
-                for(let i = 0; i < sorted_threads.length - 1; i++) {
-                    if (sorted_threads[i] && sorted_threads[i + 1]) {
-                        if (sorted_threads[i].data.permalink === sorted_threads[i + 1].data.permalink) {
-                            sorted_threads.splice(i + 1, 1);
-                        }
+                var unique_threads = [];
+                for(let i = 0; i < sorted_threads.length; i++) {
+                    if (!isDupe(sorted_threads[i], unique_threads)) {
+                        unique_threads.push(sorted_threads[i]);
                     }
                 }
+                
+                sorted_threads = unique_threads;
 
                 let $thread_select = $("<select id='thread_select'></select>");
                 let starterTime = "";

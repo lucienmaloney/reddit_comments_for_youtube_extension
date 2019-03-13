@@ -314,6 +314,11 @@ html[dark] a.author.submitter {
 html[dark] #reddit_comments #title {
   color: var(--yt-primary-text-color);
 }
+
+html[dark] #reddit_comments .md pre {
+	background-color: #444444 !important;
+	border-color: #2d2d2d !important;
+}
 /*
 .gilded-icon:before {
   background-image: url("./gilded.png");
