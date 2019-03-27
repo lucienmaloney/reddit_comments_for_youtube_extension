@@ -16,10 +16,10 @@ const call8 = video_id => $.ajax({url: "https://www.reddit.com/search.json?q=url
 
 function display_error_message() {
     if (!navigator.onLine) {
-        append_extension(false, "<h3 id='nothread'>Internet Connection Error. Please check your connection and reload the page.</h3>", "");
+        append_extension(false, "<h3 id='nothread'>Internet connection error. Please check your connection and reload the page.</h3>", "");
         $("#reddit_comments > #nav").attr("display", "none");     
     } else {
-        append_extension(false, "<h3 id='nothread'>Unknown Error Loading Reddit Content. Try Reloading the Page</h3>", "");
+        append_extension(false, "<h3 id='nothread'>Unknown error loading Reddit content. It's likely that Reddit is down or that your ad-blocker is blocking the request.</h3>", "");
         $("#reddit_comments > #nav").attr("display", "none");
     }
 }
@@ -313,20 +313,21 @@ function append_extension($thread_select, $header, $comments, time) {
     // Go through and update the links on the page to the proper base
     // For example, there might be a link '/r/askreddit' that if we left alone would go to 'www.youtube.com/r/askreddit'
     // So if a link starts with a forward slash we need to replace it with www.reddit.com/
-    $("#reddit_comments > #comments, #reddit_comments > #title").find("a").each(function() {
+    $("#reddit_comments > #comments, #reddit_comments > #title").find("a:not(.author)").each(function() {
         const href = this.getAttribute("href");
-        if (this.classList.contains("author")) {
-			$(this).attr("href", $(this).attr("href").replace("old.reddit.com", "www.reddit.com"));
-        }
         if (href === "#s" || href === "/s") {
             $(this).attr("href", "javascript:void(0)");
             $(this).addClass("reddit_spoiler");
         } else if (href[0] === "/") {
             $(this).attr("href", "https://www.reddit.com" + href);
         }
-    });
+        
+    })
     
-    $
+    
+    $("#reddit_comments > #comments, #reddit_comments > #title").find("a.author").each(function() {
+        $(this).attr("href", $(this).attr("href").replace("old.reddit.com", "www.reddit.com"));
+    })
 
     if ($("#reddit_comments > #nav > select").length) {
         const subreddit = $("#reddit_comments > #nav > select").find(":selected")[0].innerHTML.split(",")[0];
