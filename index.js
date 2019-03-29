@@ -33,10 +33,7 @@ function isDupe(item, array) {
     return false;
 }
 
-let sort = null;
-chrome.storage.sync.get("sort", function(items) {
-    sort = items.sort ? items.sort : "votes";
-});
+let sort = "votes";
 
 // URL variable keeps track of current URL so that if it changes we'll be able to tell
 let url = "";
@@ -292,11 +289,9 @@ function append_extension($thread_select, $header, $comments, time) {
             $sort_select.on("change", function(event) {
                 const new_sort = event.target.value;
                 if (new_sort !== sort) {
-                    chrome.storage.sync.set({"sort": new_sort}, function() {
-                        sort = new_sort;
-                        $("#reddit_comments").remove();
-                        load_extension();
-                    });
+					sort = new_sort;
+					$("#reddit_comments").remove();
+					load_extension();
                 }
             });
 
