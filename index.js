@@ -143,24 +143,28 @@ function clean_reddit_content($content) {
     return $content;
 }
 
-function setup_thread(permalink, $thread_select, time) {
-    $.ajax({
-        url: "https://old.reddit.com" + permalink,
+function get_thread(permalink, $thread_select, time) {
+    
+}
 
-        success: function(data) {
-            let $page = $(data);
-            // Make thread title link go to actual thread:
-            $page.find("a.title").attr("href", "https://www.reddit.com" + permalink);
-            $page = clean_reddit_content($page);
+function setup_thread(permalink, $thread_select, time, page) {
+    
+    chrome.runtime.sendMessage({permalink: permalink}, function(response) {
+        
+        console.log(response.response);
+        var $page = $(response.response);
+        // Make thread title link go to actual thread:
+        $page.find("a.title").attr("href", "https://www.reddit.com" + permalink);
+        $page = clean_reddit_content($page);
 
-            const header_html = $page.find(".top-matter")[0].innerHTML;
-            const comment_html = $page.find(".commentarea")[0].innerHTML;
+        const header_html = $page.find(".top-matter")[0].innerHTML;
+        const comment_html = $page.find(".commentarea")[0].innerHTML;
 
-            append_extension($thread_select, header_html, comment_html, time);
-        },
+        append_extension($thread_select, header_html, comment_html, time);
 
-        error: display_error_message
     });
+        
+
 }
 
 // Lots of elements in the Reddit comments have onclick handlers that call a function "click_thing()"
