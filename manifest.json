@@ -1,8 +1,8 @@
 {
 	"manifest_version": 2,
 	"name": "Reddit Comments for YouTube",
-	"version": "1.4.0",
-	"permissions": ["http://www.youtube.com/", "https://www.youtube.com/", "http://www.reddit.com/", "https://www.reddit.com/", "http://old.reddit.com/", "https://old.reddit.com/", "https://cors-anywhere.herokuapp.com/", "storage"],
+	"version": "1.4.1",
+	"permissions": ["*://www.youtube.com/", "*://*.reddit.com/", "storage"],
 	"content_scripts": [{
 		"matches": ["https://www.youtube.com/*"],
 		"js": ["jquery-3.3.1.min.js", "index.js"],

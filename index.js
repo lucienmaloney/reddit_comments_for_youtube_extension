@@ -143,28 +143,21 @@ function clean_reddit_content($content) {
     return $content;
 }
 
-function get_thread(permalink, $thread_select, time) {
-    
-}
-
-function setup_thread(permalink, $thread_select, time, page) {
-    
+function setup_thread(permalink, $thread_select, time, page) {    
     chrome.runtime.sendMessage({permalink: permalink}, function(response) {
-        
-        console.log(response.response);
-        var $page = $(response.response);
-        // Make thread title link go to actual thread:
-        $page.find("a.title").attr("href", "https://www.reddit.com" + permalink);
-        $page = clean_reddit_content($page);
+        if (response.response != null) {
+            var $page = $(response.response);
+            // Make thread title link go to actual thread:
+            $page.find("a.title").attr("href", "https://www.reddit.com" + permalink);
+            $page = clean_reddit_content($page);
 
-        const header_html = $page.find(".top-matter")[0].innerHTML;
-        const comment_html = $page.find(".commentarea")[0].innerHTML;
+            const header_html = $page.find(".top-matter")[0].innerHTML;
+            const comment_html = $page.find(".commentarea")[0].innerHTML;
 
-        append_extension($thread_select, header_html, comment_html, time);
-
+            append_extension($thread_select, header_html, comment_html, time);
+        }
+        else display_error_message();
     });
-        
-
 }
 
 // Lots of elements in the Reddit comments have onclick handlers that call a function "click_thing()"
@@ -250,7 +243,7 @@ function morechildren(e, t, n, i, s, o) {
         });
         
         // Fix content for display by removing unwanted elements and changing the domain of the links from YouTube to Reddit:
-        const removables = eroot.querySelectorAll(".flat-list.buttons, .likes, .dislikes, .numchildren, .expand, .parent, .midcol");
+        const removables = eroot.querySelectorAll(".flat-list.buttons, .likes, .dislikes, .numchildren, .parent, .midcol");
         Array.prototype.forEach.call(removables, e => e.remove());
         const links = eroot.querySelectorAll("a:not(.author)");
         Array.prototype.forEach.call(links, function(a) {
