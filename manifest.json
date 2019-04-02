@@ -1,21 +1,21 @@
 {
-	"manifest_version": 2,
-	"name": "Reddit Comments for YouTube",
-	"version": "1.4.2",
-	"permissions": ["*://www.youtube.com/", "*://*.reddit.com/"],
-	"content_scripts": [{
-		"matches": ["https://www.youtube.com/*"],
-		"js": ["jquery-3.3.1.min.js", "index.js"],
-		"css": ["thread.css"]
-	}],
-    "background": {
-        "scripts": ["jquery-3.3.1.min.js", "background.js"],
-        "persistent": false
-    },
-	"description": "Improve your YouTube experience by adding a Reddit comment section to the site! Supports up to 800 threads per video.",
-	"icons": { 
-	"16": "16px_icon.png",
-	"48": "48px_icon.png",
-	"128": "128px_icon.png"
-	}
+  "manifest_version": 2,
+  "name": "Reddit Comments for YouTube",
+  "version": "1.4.2",
+  "permissions": ["*://www.youtube.com/", "*://*.reddit.com/"],
+  "content_scripts": [{
+    "matches": ["https://www.youtube.com/*"],
+    "js": ["jquery-3.3.1.min.js", "index.js"],
+    "css": ["thread.css"]
+  }],
+  "background": {
+    "scripts": ["jquery-3.3.1.min.js", "background.js"],
+    "persistent": false
+  },
+  "description": "Improve your YouTube experience by adding a Reddit comment section to the site! Supports up to 800 threads per video.",
+  "icons": {
+    "16": "16px_icon.png",
+    "48": "48px_icon.png",
+    "128": "128px_icon.png"
+  }
 }

@@ -233,7 +233,7 @@ span.deepthread {
 
 #reddit_comments p {
   margin-top: 3px !important;
-  -webkit-margin-after: 0em !important;  
+  -webkit-margin-after: 0em !important;
 }
 
 .titleTime {
@@ -244,11 +244,8 @@ span.deepthread {
   visibility: visible;
   width: 0px;
   height: 0px;
-  /*float: left;*/
   background: transparent;
   overflow: visible;
-  /*padding-top: 12px !important;
-  margin-right: 15px;*/
   position: relative;
   top: 18px;
   right: 20px;
@@ -319,11 +316,6 @@ html[dark] #reddit_comments .md pre {
 	background-color: #444444 !important;
 	border-color: #2d2d2d !important;
 }
-/*
-.gilded-icon:before {
-  background-image: url("./gilded.png");
-}
-*/
 
 .gilded-icon {
   position: relative;
