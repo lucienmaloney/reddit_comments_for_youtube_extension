@@ -34,6 +34,99 @@ function isDupe(item, array) {
 }
 
 let sort = "votes";
+if (localStorage && localStorage.getItem('rifSort')) {
+  sort = localStorage.getItem('rifSort');
+}
+
+function sort_threads(threads) {
+  return threads.sort(function(a,b) {
+    const conda = sort === "subreddit" ? a.data.subreddit.toLowerCase() : sort === "votes" ? b.data.score : b.data.num_comments;
+    const condb = sort === "subreddit" ? b.data.subreddit.toLowerCase() : sort === "votes" ? a.data.score : a.data.num_comments;
+    const namea = a.data.name.toLowerCase();
+    const nameb = b.data.name.toLowerCase();
+    return ((conda < condb) ? -1 : ((conda > condb) ? 1 : ((namea < nameb) ? -1 : 1)));
+  });
+}
+
+function get_threads(v, callback) {
+  $.when(call1(v), call2(v), call3(v), call4(v), call5(v), call6(v), call7(v), call8(v)).then(function(r1, r2, r3, r4, r5, r6, r7, r8) {
+    const threads = r1[0].data.children
+      .concat(r2[0].data.children)
+      .concat(r3[0].data.children)
+      .concat(r4[0].data.children)
+      .concat(r5[0].data.children)
+      .concat(r6[0].data.children)
+      .concat(r7[0].data.children)
+      .concat(r8[0].data.children);
+
+    callback(threads);
+  }).fail(display_error_message);
+}
+
+function setup_threads(threads) {
+  const filtered = threads.filter(t => !t.data.promoted);
+
+  // If there is at least 1 thread:
+  if (filtered.length) {
+    let sorted_threads = sort_threads(filtered);
+
+    // Filter duplicates:
+    var unique_threads = [];
+    for(let i = 0; i < sorted_threads.length; i++) {
+      if (!isDupe(sorted_threads[i], unique_threads)) {
+        unique_threads.push(sorted_threads[i]);
+      }
+    }
+
+    sorted_threads = unique_threads;
+
+    let $thread_select = $("<select id='thread_select'></select>");
+    let starterTime = "";
+
+    sorted_threads.forEach(function(thread, i) {
+      const t = thread.data;
+      const subreddit = "r/" + t.subreddit;
+      // &#8679; is an upvote symbol, &#128172; is a comment symbol
+      const forward = `${subreddit}, ${t.score}&#8679;, ${t.num_comments}&#128172;`;
+      // Add in a dynamic number of spaces so that all the video titles line up
+      const spaces = "&nbsp".repeat(52 - forward.length);
+      // Chop off titles that are too long to fit on screen:
+      const sliced_title = t.title.length < 65 ? t.title : t.title.slice(0, 60) + "...";
+
+      let time = t.url.match(/(\#|\?|\&)t\=\d+(m\d+s)?/);
+      if (time) {
+        time = time[0].slice(3);
+        if (!isNaN(time)) {
+          time = `${parseInt(parseInt(time) / 60)}m${parseInt(time) % 60}s`;
+        }
+      } else {
+        time = "";
+      }
+
+      if (i === 0) {
+        starterTime = time;
+      }
+
+      const $opt = `<option
+        value="${t.permalink}"
+        title="${t.title.replace(/\"/g,'&quot;')}"
+        time="${time}"
+        >${forward}${spaces} ${sliced_title}</option>`;
+
+      $thread_select.append($opt);
+    });
+
+    $thread_select.on('change', function(event) {
+      $("#reddit_comments > #comments").empty();
+      $("#reddit_comments > #title").empty().html("<h1>Loading Thread...</h1>");
+      setup_comments(event.target.value, null, $($("option:selected", this)[0]).attr("time"));
+    });
+    setup_comments(sorted_threads[0].data.permalink, $thread_select, starterTime);
+  } else {
+    append_extension(false, "<h3 id='nothread'>No Threads Found</h3>", "");
+    $("#reddit_comments > #nav").attr("display", "none");
+  }
+}
 
 // URL variable keeps track of current URL so that if it changes we'll be able to tell
 let url = "";
@@ -41,90 +134,11 @@ let url = "";
 function load_extension() {
   // The v param of a YouTube URL is the video's unique ID which is needed to get Reddit threads about it
   const youtube_url = new URL(window.location.href);
-  const v = youtube_url.searchParams.get("v");
+  const video = youtube_url.searchParams.get("v");
 
   // Only load extension if v exists, which it won't on pages like the home page or settings
-  if (v) {
-    $.when(call1(v), call2(v), call3(v), call4(v), call5(v), call6(v), call7(v), call8(v)).then(function(r1, r2, r3, r4, r5, r6, r7, r8) {
-      const threads = r1[0].data.children
-        .concat(r2[0].data.children)
-        .concat(r3[0].data.children)
-        .concat(r4[0].data.children)
-        .concat(r5[0].data.children)
-        .concat(r6[0].data.children)
-        .concat(r7[0].data.children)
-        .concat(r8[0].data.children);
-
-      const filtered = threads.filter(t => !t.data.promoted);
-
-      // If there is at least 1 thread:
-      if (filtered.length) {
-        // Get threads in alphabetical order so they're easier for the user to navigate:
-        sorted_threads = filtered.sort(function(a,b) {
-          const conda = sort === "subreddit" ? a.data.subreddit.toLowerCase() : sort === "votes" ? b.data.score : b.data.num_comments;
-          const condb = sort === "subreddit" ? b.data.subreddit.toLowerCase() : sort === "votes" ? a.data.score : a.data.num_comments;
-          const namea = a.data.name.toLowerCase();
-          const nameb = b.data.name.toLowerCase();
-          return ((conda < condb) ? -1 : ((conda > condb) ? 1 : ((namea < nameb) ? -1 : 1)));
-        });
-
-        // Filter duplicates:
-        var unique_threads = [];
-        for(let i = 0; i < sorted_threads.length; i++) {
-          if (!isDupe(sorted_threads[i], unique_threads)) {
-            unique_threads.push(sorted_threads[i]);
-          }
-        }
-
-        sorted_threads = unique_threads;
-
-        let $thread_select = $("<select id='thread_select'></select>");
-        let starterTime = "";
-
-        sorted_threads.forEach(function(thread, i) {
-          const t = thread.data;
-          const subreddit = "r/" + t.subreddit;
-          // &#8679; is an upvote symbol, &#128172; is a comment symbol
-          const forward = `${subreddit}, ${t.score}&#8679;, ${t.num_comments}&#128172;`;
-          // Add in a dynamic number of spaces so that all the video titles line up
-          const spaces = "&nbsp".repeat(52 - forward.length);
-          // Chop off titles that are too long to fit on screen:
-          const sliced_title = t.title.length < 65 ? t.title : t.title.slice(0, 60) + "...";
-
-          let time = t.url.match(/(\#|\?|\&)t\=\d+(m\d+s)?/);
-          if (time) {
-            time = time[0].slice(3);
-            if (!isNaN(time)) {
-              time = `${parseInt(parseInt(time) / 60)}m${parseInt(time) % 60}s`;
-            }
-          } else {
-            time = "";
-          }
-
-          if (i === 0) {
-            starterTime = time;
-          }
-
-          const $opt = `<option
-            value="${t.permalink}"
-            title="${t.title.replace(/\"/g,'&quot;')}"
-            time="${time}"
-            >${forward}${spaces} ${sliced_title}</option>`;
-
-          $thread_select.append($opt);
-        });
-
-        $thread_select.on('change', function(event) {
-          $("#reddit_comments > #comments").empty();
-          $("#reddit_comments > #title").empty().html("<h1>Loading Thread...</h1>");
-          setup_thread(event.target.value, null, $($("option:selected", this)[0]).attr("time"));
-        });
-        setup_thread(sorted_threads[0].data.permalink, $thread_select, starterTime);
-      } else {
-        append_extension(false, "<h3 id='nothread'>No Threads Found</h3>", "");
-        $("#reddit_comments > #nav").attr("display", "none");
-      }
-    }).fail(display_error_message);
+  if (video) {
+    get_threads(video, setup_threads);
   }
 }
 
@@ -141,7 +155,7 @@ function clean_reddit_content($content) {
   return $content;
 }
 
-function setup_thread(permalink, $thread_select, time, page) {
+function setup_comments(permalink, $thread_select, time, page) {
   chrome.runtime.sendMessage({permalink: permalink}, function(response) {
     if (response.response != null) {
       var $page = $(response.response);
@@ -178,7 +192,6 @@ function toggle_expand(elem) {
   }
 }
 
-// This next function is something else entirely. I wouldn't recommend touching it.
 function togglecomment(e) {
   var t=e.parentElement.parentElement.parentElement;
   var r=t.classList.contains("collapsed");
@@ -291,6 +304,9 @@ function append_extension($thread_select, $header, $comments, time) {
       $sort_select.on("change", function(event) {
         const new_sort = event.target.value;
         if (new_sort !== sort) {
+          if (localStorage) {
+            localStorage.setItem('rifSort', new_sort);
+          }
 					sort = new_sort;
 					$("#reddit_comments").remove();
 					load_extension();
