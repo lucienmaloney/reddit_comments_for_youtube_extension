@@ -28,5 +28,7 @@ Reddit Comments for YouTube is a work in progress. Here's a current list of plan
 - Improve load time
 - Better modularize/despaghettify code
 - Timestamp link videos
+- Fix gild icon display
+- Fix thread count display
 
 Feel free to add to this list for feature requests or send in pull requests with your own changes!
