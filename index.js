@@ -1,25 +1,9 @@
-// The Reddit search API is super inconsistent, like unbelievably inconsistent
-// The exact same request can return different results in different browsers even
-// Add on to that the fact that YouTube URLs can take many different forms
-// So, basically, the only way to ensure that as many reddit threads as possible are found is to send
-// a bunch of similar, but slightly different requests
-// This seems crazy, and it is, but believe me when I say there is no better way to do this:
-
-const call1 = video_id => $.ajax({url: "https://www.reddit.com/api/info.json?url=https://www.youtube.com/watch?v=" + video_id + "&limit=100"});
-const call2 = video_id => $.ajax({url: "https://www.reddit.com/api/info.json?url=http://www.youtube.com/watch?v=" + video_id + "&limit=100"});
-const call3 = video_id => $.ajax({url: "https://www.reddit.com/api/info.json?url=https://youtu.be/" + video_id + "&limit=100"});
-const call4 = video_id => $.ajax({url: "https://www.reddit.com/api/info.json?url=http://youtu.be/" + video_id + "&limit=100"});
-const call5 = video_id => $.ajax({url: "https://www.reddit.com/search.json?q=url:https://www.youtube.com/watch?v=" + video_id + "&limit=100"});
-const call6 = video_id => $.ajax({url: "https://www.reddit.com/search.json?q=url:http://www.youtube.com/watch?v=" + video_id + "&limit=100"});
-const call7 = video_id => $.ajax({url: "https://www.reddit.com/search.json?q=url:https://youtu.be/" + video_id + "&limit=100"});
-const call8 = video_id => $.ajax({url: "https://www.reddit.com/search.json?q=url:http://youtu.be/" + video_id + "&limit=100"});
-
 function display_error_message() {
   if (!navigator.onLine) {
     append_extension(false, "<h3 id='nothread'>Internet connection error. Please check your connection and reload the page.</h3>", "");
     $("#reddit_comments > #nav").attr("display", "none");
   } else {
-    append_extension(false, "<h3 id='nothread'>Unknown error loading Reddit content. It's likely that Reddit is down or that your ad-blocker is blocking the request.</h3>", "");
+    append_extension(false, "<h3 id='nothread'>Unknown error loading Reddit content. It is possible that Reddit is down or something in the extension went wrong.</h3>", "");
     $("#reddit_comments > #nav").attr("display", "none");
   }
 }
@@ -39,7 +23,7 @@ if (localStorage && localStorage.getItem('rifSort')) {
 }
 
 function sort_threads(threads) {
-  return threads.sort(function(a,b) {
+  return threads.sort(function(a, b) {
     const conda = sort === "subreddit" ? a.data.subreddit.toLowerCase() : sort === "votes" ? b.data.score : b.data.num_comments;
     const condb = sort === "subreddit" ? b.data.subreddit.toLowerCase() : sort === "votes" ? a.data.score : a.data.num_comments;
     const namea = a.data.name.toLowerCase();
@@ -49,16 +33,17 @@ function sort_threads(threads) {
 }
 
 function get_threads(v, callback) {
-  $.when(call1(v), call2(v), call3(v), call4(v), call5(v), call6(v), call7(v), call8(v)).then(function(r1, r2, r3, r4, r5, r6, r7, r8) {
-    const threads = r1[0].data.children
-      .concat(r2[0].data.children)
-      .concat(r3[0].data.children)
-      .concat(r4[0].data.children)
-      .concat(r5[0].data.children)
-      .concat(r6[0].data.children)
-      .concat(r7[0].data.children)
-      .concat(r8[0].data.children);
+  const baseUrl = 'https://www.reddit.com/api/info.json?limit=100&url=';
+  const requests = [
+    'https://www.youtube.com/watch?v=',
+    'http://www.youtube.com/watch?v=',
+    'https://youtu.be/',
+    'http://youtu.be/',
+  ].map(url => `${baseUrl}${url}${v}`);
 
+  $.when(...requests.map(url => $.ajax({url: url}))).then(function(...args) {
+    const threads = [];
+    args.forEach(r => r[0].data.children.forEach(t => threads.push(t)));
     callback(threads);
   }).fail(display_error_message);
 }
